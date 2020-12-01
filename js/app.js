@@ -7,7 +7,14 @@ let articuloItem = [];
 
 cargarEventListeners();
 function cargarEventListeners(){
-    listacurso.addEventListener('click',agregarCurso);  
+    listacurso.addEventListener('click',agregarCurso);
+    
+    carrito.addEventListener('click',eliminarCurso);
+
+    vaciarcarritobtn.addEventListener('click',()=>{
+     articuloItem=[];
+     cleanHtml();
+    });
 }
 
 //Funciones
@@ -20,6 +27,12 @@ function agregarCurso(e){
     } 
 }
 
+function eliminarCurso(e){
+    const curdoId =e.target.getAttribute('data-id');
+    articuloItem = articuloItem.filter(curso => curso.id !==curdoId);
+    carritoHtml();
+}
+
 function leerDatos(curso){
   console.log(curso); 
   const infoCurso={
@@ -29,8 +42,20 @@ function leerDatos(curso){
       id:curso.querySelector('a').getAttribute('data-id'),
       cantidad:1
   } 
-  articuloItem=[...articuloItem,infoCurso]; 
-  console.log(articuloItem); 
+  
+  const exists = articuloItem.some( curso => curso.id === infoCurso.id );
+  if(exists){
+  const cursos=articuloItem.map( curso =>{
+  if(curso => curso.id === infoCurso.id){
+    curso.cantidad++;
+    return curso;
+  } else {
+      return curso;
+  }
+  });
+  }else{
+    articuloItem=[...articuloItem,infoCurso]; 
+  }
   carritoHtml();
 }
 
